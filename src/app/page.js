@@ -20,6 +20,7 @@ export default function Home() {
   const [improvementValue, setImprovementValue] = useState("");
   const [strengthsValue, setStrengthsValue] = useState("");
   const [chatResponseData, setChatResponseData] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   //clears input text
   const handleClear = (event) => {
@@ -44,6 +45,7 @@ export default function Home() {
   
 
   const sendTeacherMessage = (fullTeacherPrompt) => {
+    setIsLoading(true);
     const url = "https://api.openai.com/v1/chat/completions";
     const headers = {
       "Content-Type": "application/json",
@@ -58,9 +60,12 @@ export default function Home() {
     axios.post(url, data, { headers: headers })
     .then((response) => {
       console.log(response);
+      setIsLoading(false);
       setChatResponseData(response.data.choices[0].message.content);
     }).catch((error) => {
       console.log(error);
+      setIsLoading(false);
+      setChatResponseData("There was an error. Sorry!");
     })
   };
 
@@ -76,12 +81,12 @@ export default function Home() {
         <ClearButton onClick={ handleClear }>Clear</ClearButton>
       </div>
       <div className="container mx-auto my-10 p-8 bg-white shadow-md rounded-md">
-          <h1 className="text-3x1 font-bold mb-6">Results</h1>
-          {chatResponseData ? (
+        <h1 className="text-3x1 font-bold mb-6">Results</h1>
+        {isLoading ? (
+        <p>Loading...</p>
+        ) : (
           <p className="text-gray-700 leading-7">{chatResponseData}</p>
-          ) : (
-            <p>Loading...</p>
-          )}
+        )}
       </div>
     </div>
   );
