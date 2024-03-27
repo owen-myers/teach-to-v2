@@ -19,6 +19,7 @@ export default function Home() {
   const [gradeValue, setGradeValue] = useState("");
   const [improvementValue, setImprovementValue] = useState("");
   const [strengthsValue, setStrengthsValue] = useState("");
+  const [chatResponseData, setChatResponseData] = useState("");
 
   //clears input text
   const handleClear = (event) => {
@@ -32,15 +33,17 @@ export default function Home() {
 
 
   const handleSubmit = (event) => {
-    sendTeacherMessage();
-    console.log(subjectValue);
-    console.log(gradeValue);
-    console.log(improvementValue);
-    console.log(strengthsValue);
+    event.preventDefault();
+
+    const fullTeacherPrompt = "You are a special education expert. Write an IEP goal in simple language for a student doing "
+    + subjectValue + " at a " + gradeValue + " grade level. This student has the following needs for improvement: " + improvementValue +
+    ". This student has the following strengths: " + strengthsValue + ".";
+    
+    sendTeacherMessage(fullTeacherPrompt);
   };
   
 
-  const sendTeacherMessage = () => {
+  const sendTeacherMessage = (fullTeacherPrompt) => {
     const url = "https://api.openai.com/v1/chat/completions";
     const headers = {
       "Content-Type": "application/json",
@@ -48,13 +51,14 @@ export default function Home() {
     };
     const data = {
       model: "gpt-3.5-turbo",
-      messages: [{ "role": "user", "content": "Hi! How are you?" }]
+      messages: [{ "role": "user", "content": fullTeacherPrompt }],
+      max_tokens: 450
     };
 
     axios.post(url, data, { headers: headers })
     .then((response) => {
       console.log(response);
-      //TODO: FIX THIS setChatLog = response.data.choices[0].message.content;
+      setChatResponseData(response.data.choices[0].message.content);
     }).catch((error) => {
       console.log(error);
     })
@@ -73,7 +77,11 @@ export default function Home() {
       </div>
       <div className="container mx-auto my-10 p-8 bg-white shadow-md rounded-md">
           <h1 className="text-3x1 font-bold mb-6">Results</h1>
-          <p className="text-gray-700 leading-7">Placeholder</p>
+          {chatResponseData ? (
+          <p className="text-gray-700 leading-7">{chatResponseData}</p>
+          ) : (
+            <p>Loading...</p>
+          )}
       </div>
     </div>
   );
