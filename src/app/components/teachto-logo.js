@@ -6,6 +6,7 @@ export default function TeachToLogo(){
             <Link href="/">
                 <img src="../TeachTo_Scribble.png" alt="Scribble" className="h-20 w-auto"/>
             </Link>
+            <h2 className="text-2xl font-semibold">TeachTo</h2>
         </div>
     );
 };

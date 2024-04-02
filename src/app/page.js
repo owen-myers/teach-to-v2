@@ -6,6 +6,8 @@ import UserInput from "./components/user-input.js";
 import GenButton from "./components/generate-button.js";
 import ClearButton from "./components/clear-button.js";
 import axios from "axios";
+import LittleGuy from "../../public/TeachTo_Little_Guy.png";
+import Image from "next/image";
 
 export default function Home() {
 
@@ -70,8 +72,16 @@ export default function Home() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2x1 font-semibold mb-4">Goalie</h1>
+    <div className="container mx-auto p-2">
+      <div className="container mx-auto flex justify-center items-center">
+        <Image
+        src={ LittleGuy }
+        width={300}
+        height={300}
+        alt="Little guy holding a pencil."
+        />
+      </div>
+      <h1 className="text-2x1 font-semibold mb-4">Fill out the form to generate an IEP goal. Results below!</h1>
       <UserInput question="What subject is your student working in?" type="text" placeholder="e.g., Math" value={subjectValue} onChange={(e) => setSubjectValue(e.target.value)} />
       <UserInput question="What is your student's present grade level of performance in the above subject?" type="text" placeholder="e.g., 5th" value={gradeValue} onChange={(e) => setGradeValue(e.target.value)} />
       <UserInput question="What does your student need to improve?" type="text" placeholder="e.g., Multiplying two-digit numbers" value={improvementValue} onChange={(e) => setImprovementValue(e.target.value)} />
