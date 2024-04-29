@@ -73,7 +73,7 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-2">
-      <div className="container mx-auto flex justify-center items-center">
+      <div className="container mx-auto flex justify-center items-center mb-12">
         <Image
         src={ LittleGuy }
         width={300}
@@ -81,7 +81,7 @@ export default function Home() {
         alt="Little guy holding a pencil."
         />
       </div>
-      <h1 className="text-2x1 font-semibold mb-4">Fill out the form to generate an IEP goal. Results below!</h1>
+      <h1 className="text-2x1 font-semibold mb-12">Fill out the form to generate an IEP goal. Results below!</h1>
       <UserInput question="What subject is your student working in?" type="text" placeholder="e.g., Math" value={subjectValue} onChange={(e) => setSubjectValue(e.target.value)} />
       <UserInput question="What is your student's present grade level of performance in the above subject?" type="text" placeholder="e.g., 5th" value={gradeValue} onChange={(e) => setGradeValue(e.target.value)} />
       <UserInput question="What does your student need to improve?" type="text" placeholder="e.g., Multiplying two-digit numbers" value={improvementValue} onChange={(e) => setImprovementValue(e.target.value)} />
