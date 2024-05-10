@@ -11,11 +11,6 @@ import Image from "next/image";
 
 export default function Home() {
 
-  {/*
-  3/23/24 - Input will go here, but I have to get it from all the following
-  UserInput components. Don't know how to do that yet.
-  */}
-
   //input state values
   const [subjectValue, setSubjectValue] = useState("");
   const [gradeValue, setGradeValue] = useState("");
@@ -38,9 +33,9 @@ export default function Home() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const fullTeacherPrompt = "You are a special education expert. Write an IEP goal in simple language for a student doing "
+    const fullTeacherPrompt = "You are a special education expert. Write an individualized education plan (IEP) goal for a special education teacher that has a student doing "
     + subjectValue + " at a " + gradeValue + " grade level. This student has the following needs for improvement: " + improvementValue +
-    ". This student has the following strengths: " + strengthsValue + ".";
+    ". This student also has the following strengths: " + strengthsValue + ". " + "Explain why you chose this goal and potential alternative goals.";
     
     sendTeacherMessage(fullTeacherPrompt);
   };
