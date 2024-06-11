@@ -1,3 +1,7 @@
+TeachTo is a goal-suggestion tool for special ed teachers writing IEPs or 504s. No sign-up required; no data collected.
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
