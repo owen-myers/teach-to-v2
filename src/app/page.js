@@ -16,8 +16,9 @@ export default function Home() {
   const [gradeValue, setGradeValue] = useState("");
   const [improvementValue, setImprovementValue] = useState("");
   const [strengthsValue, setStrengthsValue] = useState("");
-  const [chatResponseData, setChatResponseData] = useState("");
+  let [chatResponseData, setChatResponseData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+
 
   //clears input text
   const handleClear = (event) => {
@@ -35,7 +36,22 @@ export default function Home() {
 
     const fullTeacherPrompt = "You are a special education expert. Write an individualized education plan (IEP) goal for a special education teacher that has a student doing "
     + subjectValue + " at a " + gradeValue + " grade level. This student has the following needs for improvement: " + improvementValue +
-    ". This student also has the following strengths: " + strengthsValue + ". " + "Explain why you chose this goal and potential alternative goals.";
+    ". This student also has the following strengths: " + strengthsValue + ". " + "Explain why you chose this goal and potential alternative goals. Format the response as a JSON object." +
+    "Do not include any other information in the response." + "Example:" + 
+
+    `{
+    "IEP_goal": "By the end of the school year, the student will improve their 
+    reading comprehension skills to accurately summarize a grade-level passage in writing, 
+    with at least 80% accuracy as measured by teacher-generated assessments.", 
+    "reason": "I chose this goal because it focuses on a specific skill area that the student 
+    needs to improve on, which is reading comprehension. By targeting this area, we can track the student's 
+    progress more effectively throughout the year.", 
+    "potential_alternative_goals": ["By the end of the school year, the student will increase 
+    their vocabulary knowledge by correctly defining and using at least 10 new grade-level 
+    words in writing assignments with at least 80% accuracy.", "By the end of the school year, 
+    the student will improve their fluency by being able to read a grade-level passage aloud with correct 
+    pronunciation and expression at a rate of 100 words per minute."]
+    }`;
     
     sendTeacherMessage(fullTeacherPrompt);
   };
@@ -57,8 +73,15 @@ export default function Home() {
     axios.post(url, data, { headers: headers })
     .then((response) => {
       console.log(response);
+      console.log(response.data.choices[0].message.content);
+
+      //parse JSON object
+      chatResponseData = JSON.parse(response.data.choices[0].message.content);
+
+      console.log(chatResponseData.IEP_goal);
       setIsLoading(false);
-      setChatResponseData(response.data.choices[0].message.content);
+      setChatResponseData(chatResponseData);
+
     }).catch((error) => {
       console.log(error);
       setIsLoading(false);
@@ -90,7 +113,15 @@ export default function Home() {
         {isLoading ? (
         <p>Loading...</p>
         ) : (
-          <p className="text-gray-700 leading-7">{chatResponseData}</p>
+          chatResponseData && Object.keys(chatResponseData).length > 0 && (
+            <div>
+            <h2 className="text-3x1 font-bold mb-6">Suggested Goal</h2>
+            <p>{chatResponseData.IEP_goal}</p>
+            <br></br>
+            <h2 className="text-3x1 font-bold mb-6">Reasoning</h2>
+            <p>{chatResponseData.reason}</p>
+            </div>
+          )
         )}
       </div>
     </div>
