@@ -1,13 +1,15 @@
 //need to keep tabs on this; might cause issues with the rest of the app
 'use client';
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import UserInput from "./components/user-input.js"; 
 import GenButton from "./components/generate-button.js";
 import ClearButton from "./components/clear-button.js";
 import axios from "axios";
-import LittleGuy from "../../public/TeachTo_Little_Guy.png";
+import LittleGuy from "../../public/TeachTo Little Guy.svg";
 import Image from "next/image";
+import LoadingSpinner from "./components/loading-spinner.js";
+import Modal from "./components/modal.js";
 
 export default function Home() {
 
@@ -18,6 +20,8 @@ export default function Home() {
   const [strengthsValue, setStrengthsValue] = useState("");
   let [chatResponseData, setChatResponseData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [responseIsEmpty, setEmptyResponse] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
 
   //clears input text
@@ -29,6 +33,16 @@ export default function Home() {
     setImprovementValue("");
     setStrengthsValue("");
   };
+
+  // ref for auto-scrolling
+  const responseRef = useRef(null);
+
+  //auto-scroll to bottom of page
+  const autoScroll = () => {
+    if (responseRef.current) {
+      responseRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 
 
   const handleSubmit = (event) => {
@@ -54,10 +68,12 @@ export default function Home() {
     }`;
     
     sendTeacherMessage(fullTeacherPrompt);
+    setIsModalOpen(true)
   };
   
 
   const sendTeacherMessage = (fullTeacherPrompt) => {
+    setEmptyResponse(false);
     setIsLoading(true);
     const url = "https://api.openai.com/v1/chat/completions";
     const headers = {
@@ -81,49 +97,65 @@ export default function Home() {
       console.log(chatResponseData.IEP_goal);
       setIsLoading(false);
       setChatResponseData(chatResponseData);
+      autoScroll();
 
     }).catch((error) => {
       console.log(error);
+      setEmptyResponse(false);
       setIsLoading(false);
       setChatResponseData("There was an error. Sorry!");
+      autoScroll();
     })
   };
 
   return (
-    <div className="container mx-auto p-2">
-      <div className="container mx-auto flex justify-center items-center mb-12">
+    <div className="flex items-center justify-center p-2">
+      <div className="p-4">
+        <h1 className="text-2x1 font-bold p-4">Fill out the form to generate an IEP goal. Results below!</h1>
+        <UserInput question="What subject is your student working in?" type="text" placeholder="e.g., Math" value={subjectValue} onChange={(e) => setSubjectValue(e.target.value)} />
+        <UserInput question="What is your student's present grade level of performance in the above subject?" type="text" placeholder="e.g., 5th" value={gradeValue} onChange={(e) => setGradeValue(e.target.value)} />
+        <UserInput question="What does your student need to improve?" type="text" placeholder="e.g., Multiplying two-digit numbers" value={improvementValue} onChange={(e) => setImprovementValue(e.target.value)} />
+        <UserInput question="What does your student already do well?" type="text" placeholder="e.g., Single digit multiplication" value={strengthsValue} onChange={(e) => setStrengthsValue(e.target.value)} />
+        <div className="flex space-x-4 items-center pb-12">
+          <GenButton onClick={ handleSubmit }>Generate</GenButton>
+          <ClearButton onClick={ handleClear }>Clear answers</ClearButton>
+        </div>
+
+        {/* Modal Component */}
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            chatResponseData && Object.keys(chatResponseData).length > 0 && (
+              <div>
+                <h2 className="text-3xl font-bold mb-6">Suggested Goal</h2>
+                <p className="font-body text-md">{chatResponseData.IEP_goal}</p>
+                <br/>
+                <h2 className="text-3xl font-bold mb-6">Reasoning</h2>
+                <p className="font-body text-md">{chatResponseData.reason}</p>
+              </div>
+            )
+          )}
+        </Modal>
+      </div>
+      <div className="flex justify-center items-center p-4">
         <Image
         src={ LittleGuy }
-        width={300}
-        height={300}
+        width={400}
+        height={400}
+        quality={100}
         alt="Little guy holding a pencil."
         />
       </div>
-      <h1 className="text-2x1 font-semibold mb-12">Fill out the form to generate an IEP goal. Results below!</h1>
-      <UserInput question="What subject is your student working in?" type="text" placeholder="e.g., Math" value={subjectValue} onChange={(e) => setSubjectValue(e.target.value)} />
-      <UserInput question="What is your student's present grade level of performance in the above subject?" type="text" placeholder="e.g., 5th" value={gradeValue} onChange={(e) => setGradeValue(e.target.value)} />
-      <UserInput question="What does your student need to improve?" type="text" placeholder="e.g., Multiplying two-digit numbers" value={improvementValue} onChange={(e) => setImprovementValue(e.target.value)} />
-      <UserInput question="What does your student already do well?" type="text" placeholder="e.g., Single digit multiplication" value={strengthsValue} onChange={(e) => setStrengthsValue(e.target.value)} />
-      <div>
-        <GenButton onClick={ handleSubmit }>Generate</GenButton>
-        <ClearButton onClick={ handleClear }>Clear</ClearButton>
-      </div>
-      <div className="container mx-auto my-10 p-8 bg-white shadow-md rounded-md">
-        <h1 className="text-3x1 font-bold mb-6">Results</h1>
-        {isLoading ? (
-        <p>Loading...</p>
+
+      {/* <div className="container mx-auto my-10 p-8 bg-rainbow shadow-lg rounded-md">
+        {responseIsEmpty ? ( 
+          <h1 className="flex justify-center text-md font-body">No response yet</h1>
         ) : (
-          chatResponseData && Object.keys(chatResponseData).length > 0 && (
-            <div>
-            <h2 className="text-3x1 font-bold mb-6">Suggested Goal</h2>
-            <p>{chatResponseData.IEP_goal}</p>
-            <br></br>
-            <h2 className="text-3x1 font-bold mb-6">Reasoning</h2>
-            <p>{chatResponseData.reason}</p>
-            </div>
-          )
+          <div/>
         )}
-      </div>
+      <div ref={responseRef} />
+      </div> */}
     </div>
   );
 };

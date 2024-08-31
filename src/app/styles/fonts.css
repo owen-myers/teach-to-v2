@@ -1,0 +1,21 @@
+
+@font-face {
+    font-family: 'Italiana Regular';
+    src: url('../../../public/fonts/Italiana-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lexend Exa Normal';
+    src: url('../../../public/fonts/LexendExa-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lexend Exa Bold';
+    src: url('../../../public/fonts/LexendExa-VariableFont_wght.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}

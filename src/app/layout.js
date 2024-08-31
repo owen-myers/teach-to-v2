@@ -1,5 +1,5 @@
-import TeachToLogo from './components/teachto-logo.js';
-import "./globals.css";
+import "./styles/globals.css";
+import TeachToLogo from "./components/teachto-logo";
 
 
 export default function RootLayout({ children }) {

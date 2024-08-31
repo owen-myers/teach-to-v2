@@ -7,6 +7,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        title: ['Italiana Regular', 'sans-serif' ],
+        body: ['Lexend Exa Normal', 'sans-serif'],
+        bold: ['Lexend Exa Bold', 'sans-serif'],
+      },
     },
   },
   plugins: [],
