@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const inputStyling = "p-4 w-full border-2 text-sm border-black rounded-lg resize-none bg-gray-200 font-body focus:outline-none focus:scale-105 focus:shadow-lg transform transition-transform duration-150";
+const inputStyling = "p-4 w-full border-2 text-sm border-black rounded-lg resize-none font-body";
 
 const UserInput = ({ question, ...props }) => {
     return (

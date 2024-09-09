@@ -115,7 +115,7 @@ export default function Home() {
         <UserInput question="What subject is your student working in?" type="text" placeholder="e.g., Math" value={subjectValue} onChange={(e) => setSubjectValue(e.target.value)} />
         <UserInput question="What is your student's present grade level of performance in the above subject?" type="text" placeholder="e.g., 5th" value={gradeValue} onChange={(e) => setGradeValue(e.target.value)} />
         <UserInput question="What does your student need to improve?" type="text" placeholder="e.g., Multiplying two-digit numbers" value={improvementValue} onChange={(e) => setImprovementValue(e.target.value)} />
-        <UserInput question="What does your student already do well?" type="text" placeholder="e.g., Single digit multiplication" value={strengthsValue} onChange={(e) => setStrengthsValue(e.target.value)} />
+        <UserInput question="What does your student already do well?" type="text" placeholder="e.g., Single-digit multiplication" value={strengthsValue} onChange={(e) => setStrengthsValue(e.target.value)} />
         <div className="flex space-x-4 items-center pb-12">
           <GenButton onClick={ handleSubmit }>Generate</GenButton>
           <ClearButton onClick={ handleClear }>Clear answers</ClearButton>
