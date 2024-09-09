@@ -8,6 +8,7 @@ export default function RootLayout({ children }) {
       <body>
         <TeachToLogo />
         {children}
+        <a href="/terms" className="flex font-body justify-center p-4 text-sm text-gray-800">Terms</a>
       </body>
     </html>
     
