@@ -1,14 +1,14 @@
 import "./styles/globals.css";
-import TeachToLogo from "./components/teachto-logo";
+import Nav from "./nav";
 
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <TeachToLogo />
+        <Nav />
         {children}
-        <a href="/terms" className="flex font-body justify-center p-4 text-sm text-gray-800">Terms</a>
+        <a href="/terms" className="flex font-karla justify-center p-12 text-sm text-gray-800">Terms</a>
       </body>
     </html>
     

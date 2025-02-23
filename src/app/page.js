@@ -1,161 +1,191 @@
-//need to keep tabs on this; might cause issues with the rest of the app
 'use client';
 
-import { useState, useRef } from "react";
-import UserInput from "./components/user-input.js"; 
-import GenButton from "./components/generate-button.js";
-import ClearButton from "./components/clear-button.js";
-import axios from "axios";
-import LittleGuy from "../../public/TeachTo Little Guy.svg";
+import { useState } from "react";
+
+import GenButton from "./components/generate-button";
+import UserInput from "./components/user-input";
 import Image from "next/image";
-import LoadingSpinner from "./components/loading-spinner.js";
-import Modal from "./components/modal.js";
+import FrontPageTeacher from "../../public/Teacher student amico.svg";
+import LoadingSpinner from "./components/loading-spinner";
+import Modal from "./components/modal";
 
-export default function Home() {
+const gradeOtherInputStyle = `text-blue-900 border border-blue-900 border-dashed relative text-sm font-karla
+transition-colors duration-300 hover:bg-blue-200 rounded-md pl-4`;
 
-  //input state values
-  const [subjectValue, setSubjectValue] = useState("");
-  const [gradeValue, setGradeValue] = useState("");
-  const [improvementValue, setImprovementValue] = useState("");
-  const [strengthsValue, setStrengthsValue] = useState("");
-  let [chatResponseData, setChatResponseData] = useState({});
+const subjectOtherInputStyle = `text-green-900 border border-green-900 border-dashed relative text-sm font-karla
+transition-colors duration-300 hover:bg-green-200 rounded-md pl-4`;
+
+//style for generate button
+const generateButtonHomeStyle = `bg-violet-500 text-white text-md font-karla transition-colors duration-300 
+hover:bg-violet-600`;
+
+//style for labels
+const homeLabelStyle = "font-karla pb-2";
+
+//style for response headers
+const responseHeaderStyle = "text-xl font-lora mb-6 pl-6";
+
+//style for response text
+const responseTextStyle = "font-karla text-md pl-6";
+
+const responseListStyle = "font-karla text-md pl-6 mb-4";
+
+export default function HomePage() {
+
+  //state toggle for inputs
+  const [selectedGrade, setSelectedGrade] = useState(null);
+  const [selectedSubject, setSelectedSubject] = useState(null);
+  const [writtenInput, setWrittenInput] = useState("");
+  const [chatResponseData, setChatResponseData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [responseIsEmpty, setEmptyResponse] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  //styles for grade buttons
+  const gradeButtonStyle = `bg-blue-100 text-blue-900 border border-blue-900 relative text-sm font-karla 
+  transition-colors duration-300 active:bg-blue-200 hover:bg-blue-300 `;
 
-  //clears input text
-  const handleClear = (event) => {
-    event.preventDefault();
+  //styles for subject buttons
+  const subjectButtonStyle = `bg-green-100 text-green-900 border border-green-900 relative text-sm font-karla
+  transition-colors duration-300 hover:bg-green-300 `;
 
-    setSubjectValue("");
-    setGradeValue("");
-    setImprovementValue("");
-    setStrengthsValue("");
-  };
+  //handles submit + API function call
+  const handleSubmit = async () => {
+    if (!selectedGrade || !selectedSubject) return;
 
-  // ref for auto-scrolling
-  const responseRef = useRef(null);
+    //set key/value pair
+    const key = `${selectedGrade}-${selectedSubject}`;
+    console.log("Selected Key: " + key);
 
-  //auto-scroll to bottom of page
-  const autoScroll = () => {
-    if (responseRef.current) {
-      responseRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (!key) {
+      console.error("Error: No key found for selected inputs.");
+      return;
     }
-  }
 
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const fullTeacherPrompt = "You are a special education expert. Write an individualized education plan (IEP) goal for a special education teacher that has a student doing "
-    + subjectValue + " at a " + gradeValue + " grade level. This student has the following needs for improvement: " + improvementValue +
-    ". This student also has the following strengths: " + strengthsValue + ". " + "Explain why you chose this goal and potential alternative goals. Format the response as a JSON object." +
-    "Do not include any other information in the response." + "Example:" + 
-
-    `{
-    "IEP_goal": "By the end of the school year, the student will improve their 
-    reading comprehension skills to accurately summarize a grade-level passage in writing, 
-    with at least 80% accuracy as measured by teacher-generated assessments.", 
-    "reason": "I chose this goal because it focuses on a specific skill area that the student 
-    needs to improve on, which is reading comprehension. By targeting this area, we can track the student's 
-    progress more effectively throughout the year.", 
-    "potential_alternative_goals": ["By the end of the school year, the student will increase 
-    their vocabulary knowledge by correctly defining and using at least 10 new grade-level 
-    words in writing assignments with at least 80% accuracy.", "By the end of the school year, 
-    the student will improve their fluency by being able to read a grade-level passage aloud with correct 
-    pronunciation and expression at a rate of 100 words per minute."]
-    }`;
-    
-    sendTeacherMessage(fullTeacherPrompt);
-    setIsModalOpen(true)
-  };
-  
-
-  const sendTeacherMessage = (fullTeacherPrompt) => {
-    setEmptyResponse(false);
+    setChatResponseData(null);
     setIsLoading(true);
-    const url = "https://api.openai.com/v1/chat/completions";
-    const headers = {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`
-    };
-    const data = {
-      model: "gpt-3.5-turbo",
-      messages: [{ "role": "user", "content": fullTeacherPrompt }],
-      max_tokens: 450
-    };
+    setIsModalOpen(true);
 
-    axios.post(url, data, { headers: headers })
-    .then((response) => {
-      console.log(response);
-      console.log(response.data.choices[0].message.content);
+    //fetches API request and processes response
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key, writtenInput }),
+      });
 
-      //parse JSON object
-      chatResponseData = JSON.parse(response.data.choices[0].message.content);
+      const data = await res.json();
+      console.log("API Response: ", data);
 
-      console.log(chatResponseData.IEP_goal);
-      setIsLoading(false);
-      setChatResponseData(chatResponseData);
-      autoScroll();
+      if (res.ok) {
+      setChatResponseData(JSON.parse(data.chatResponseData));
+      } else {
+        setChatResponseData("Error: " + data.error);
+      }
 
-    }).catch((error) => {
-      console.log(error);
-      setEmptyResponse(false);
-      setIsLoading(false);
+    } catch (error) {
+      console.error("Error: ", error);
       setChatResponseData("There was an error. Sorry!");
-      autoScroll();
-    })
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="flex items-center justify-center p-2">
-      <div className="p-4">
-        <h1 className="text-2x1 font-bold p-4">Fill out the form to generate an IEP goal. Results below!</h1>
-        <UserInput question="What subject is your student working in?" type="text" placeholder="e.g., Math" value={subjectValue} onChange={(e) => setSubjectValue(e.target.value)} />
-        <UserInput question="What is your student's present grade level of performance in the above subject?" type="text" placeholder="e.g., 5th" value={gradeValue} onChange={(e) => setGradeValue(e.target.value)} />
-        <UserInput question="What does your student need to improve?" type="text" placeholder="e.g., Multiplying two-digit numbers" value={improvementValue} onChange={(e) => setImprovementValue(e.target.value)} />
-        <UserInput question="What does your student already do well?" type="text" placeholder="e.g., Single-digit multiplication" value={strengthsValue} onChange={(e) => setStrengthsValue(e.target.value)} />
-        <div className="flex space-x-4 items-center pb-12">
-          <GenButton onClick={ handleSubmit }>Generate</GenButton>
-          <ClearButton onClick={ handleClear }>Clear answers</ClearButton>
+    <div>
+      <div className="flex flex-col md:flex-row w-9/10 sm:w-3/4 mx-auto items-center">
+        <div className="flex flex-col w-2/3 items-center sm:items-left mb-12">
+          <h1 className="font-lora text-4xl pb-4">Get some help with IEP goals</h1>
+          <h3 className="font-karla text-xl">Try generating one below</h3>
         </div>
-
+        <div>
+          <Image
+          src={ FrontPageTeacher }
+          alt="A teacher with her student."
+          width={250}
+          height={250}
+          />
+        </div>
+      </div>
+        <div className="flex flex-col md:flex-row md:space-x-4 md:pl-16 md:pr-16 md:pt-12 md:pb-4"> 
+          <div className="w-full md:max-w-1/3 h-full p-4">
+            <p className={homeLabelStyle}>Grade</p>
+            <div className="grid grid-cols-2 gap-4">
+              <GenButton 
+              onClick={() => setSelectedGrade('Elementary')}
+              customStyles={gradeButtonStyle + `${selectedGrade === 'Elementary' ? 'bg-blue-300' : 'bg-blue-100'}`}>Elementary
+              </GenButton>
+              <GenButton 
+              onClick={() => setSelectedGrade('Middle School')}
+              customStyles={gradeButtonStyle + `${selectedGrade === 'Middle School' ? 'bg-blue-300' : 'bg-blue-100'}`}>Middle School
+              </GenButton>
+              <GenButton 
+              onClick={() => setSelectedGrade('High School')}
+              customStyles={gradeButtonStyle + `${selectedGrade === 'High School' ? 'bg-blue-300' : 'bg-blue-100'}`}>High School
+              </GenButton>
+              <input 
+              type="text" 
+              placeholder="Other (type here)" 
+              className={gradeOtherInputStyle} 
+              onClick={() => setSelectedGrade('Other')} 
+              />
+            </div>
+          </div>
+          <div className="w-full md:max-w-1/3 h-full p-4">
+            <p className={homeLabelStyle}>Subject</p>
+            <div className="grid grid-cols-2 gap-4">
+              <GenButton 
+              onClick={() => setSelectedSubject('Behavior')}
+              customStyles={subjectButtonStyle + `${selectedSubject === 'Behavior' ? 'bg-green-300' : 'bg-green-100'}`}>Behavior
+              </GenButton>
+              <GenButton 
+              onClick={() => setSelectedSubject('Math')}
+              customStyles={subjectButtonStyle + `${selectedSubject === 'Math' ? 'bg-green-300' : 'bg-green-100'}`}>Math
+              </GenButton>
+              <GenButton 
+              onClick={() => setSelectedSubject('Reading')}
+              customStyles={subjectButtonStyle + `${selectedSubject === 'Reading' ? 'bg-green-300' : 'bg-green-100'}`}>Reading
+              </GenButton>
+              <input type="text" placeholder="Other (type here)" className={subjectOtherInputStyle} />
+            </div>
+          </div>
+          <div className="w-full md:max-w-1/3 h-full p-4 mb-6">
+            <p className={homeLabelStyle}>How can the student grow?</p>
+            <UserInput type="text" placeholder="Write something here..." value={writtenInput} onChange={(e) => setWrittenInput(e.target.value)}/>
+          </div>
+        </div>
+        <div className="flex justify-center">
+            <GenButton onClick={handleSubmit} customStyles={generateButtonHomeStyle}>Generate</GenButton>
+        </div>
         {/* Modal Component */}
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
           {isLoading ? (
             <LoadingSpinner />
           ) : (
             chatResponseData && Object.keys(chatResponseData).length > 0 && (
-              <div>
-                <h2 className="text-3xl font-bold mb-6">Suggested Goal</h2>
-                <p className="font-body text-md">{chatResponseData.IEP_goal}</p>
-                <br/>
-                <h2 className="text-3xl font-bold mb-6">Reasoning</h2>
-                <p className="font-body text-md">{chatResponseData.reason}</p>
+              <div className="flex flex-col">
+                <div className="w-9/10 align-left text-left pr-4">
+                  <h3 className="font-karla text-xs text-gray-500 pl-6 mb-4 pt-4">Results</h3>
+                  <h2 className={responseHeaderStyle}>Suggested Goal</h2>
+                    <p className={responseTextStyle}>{chatResponseData?.IEP_goal || "No goal provided. Please try again."}</p>
+                  <br/>
+                  <h2 className={responseHeaderStyle}>Reasoning</h2>
+                    <p className={responseTextStyle}>{chatResponseData?.reason || "No reasoning provided. Please try again."}</p>
+                  <br/>
+                  <h2 className={responseHeaderStyle}>Potential Alternative Goals</h2>
+                    <ol className="list-decimal pl-10 mb-8">
+                      {chatResponseData?.potential_alternative_goals?.map((item, index) => (
+                        <li className={responseListStyle} key={index}>{item}</li>
+                      ))}
+                    </ol>
+                  <div className="flex justify-center">
+                    <GenButton onClick={handleSubmit} customStyles="bg-violet-500 text-white text-md font-karla
+                    transition-colors duration-300 hover:bg-violet-600 m-4 w-full sm:w-2/5">Regenerate</GenButton>
+                  </div>
+                </div>
               </div>
             )
           )}
         </Modal>
-      </div>
-      <div className="flex justify-center items-center p-4">
-        <Image
-        src={ LittleGuy }
-        width={400}
-        height={400}
-        quality={100}
-        alt="Little guy holding a pencil."
-        />
-      </div>
-
-      {/* <div className="container mx-auto my-10 p-8 bg-rainbow shadow-lg rounded-md">
-        {responseIsEmpty ? ( 
-          <h1 className="flex justify-center text-md font-body">No response yet</h1>
-        ) : (
-          <div/>
-        )}
-      <div ref={responseRef} />
-      </div> */}
     </div>
   );
 };
