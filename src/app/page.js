@@ -126,7 +126,7 @@ export default function HomePage() {
               type="text" 
               placeholder="Other (type here)" 
               className={gradeOtherInputStyle} 
-              onClick={() => setSelectedGrade('Other')} 
+              onInput={() => setSelectedGrade('Other')} 
               />
             </div>
           </div>
@@ -149,7 +149,7 @@ export default function HomePage() {
               type="text" 
               placeholder="Other (type here)" 
               className={subjectOtherInputStyle}
-              onClick={() => setSelectedSubject('Other')}
+              onInput={() => setSelectedSubject('Other')}
                />
             </div>
           </div>
