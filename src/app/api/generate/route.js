@@ -4,7 +4,7 @@ import axios from "axios";
 export async function POST(req) {
     try {
 
-        const { key, writtenInput } = await req.json();
+        const { key, writtenInput, otherGradeInput, otherSubjectInput } = await req.json();
    
         //messages based on pair selections
         const promptMessagePairs = {
@@ -154,6 +154,132 @@ export async function POST(req) {
             };`,
             "High School-Reading": `You are a special education expert. Write an individualized education 
             plan (IEP) goal for a special education teacher to improve reading skills for a high school student. 
+            Here is addtional information from the teacher on how the student can grow: ` + writtenInput + "." + 
+            "Explain why you chose this goal and always include potential alternative goals. Format the response as a JSON object. " +
+            "Do not include any other information in the response. " + "Example:" + 
+            `{
+            "IEP_goal": "By the end of the school year, the student will improve their 
+            reading comprehension skills to accurately summarize a grade-level passage in writing, 
+            with at least 80% accuracy as measured by teacher-generated assessments.", 
+            "reason": "I chose this goal because it focuses on a specific skill area that the student 
+            needs to improve on, which is reading comprehension. By targeting this area, we can track the student's 
+            progress more effectively throughout the year.", 
+            "potential_alternative_goals": ["By the end of the school year, the student will increase 
+            their vocabulary knowledge by correctly defining and using at least 10 new grade-level 
+            words in writing assignments with at least 80% accuracy.", "By the end of the school year, 
+            the student will improve their fluency by being able to read a grade-level passage aloud with correct 
+            pronunciation and expression at a rate of 100 words per minute."]
+            };`,
+            "Other-Behavior": `You are a special education expert. Write an individualized education 
+            plan (IEP) goal for a special education teacher to improve behavior for a ` + otherGradeInput + ` student. 
+            Here is addtional information from the teacher on how the student can grow: ` + writtenInput + "." + 
+            "Explain why you chose this goal and always include potential alternative goals. Format the response as a JSON object. " +
+            "Do not include any other information in the response. " + "Example:" + 
+            `{
+            "IEP_goal": "By the end of the school year, the student will improve their 
+            reading comprehension skills to accurately summarize a grade-level passage in writing, 
+            with at least 80% accuracy as measured by teacher-generated assessments.", 
+            "reason": "I chose this goal because it focuses on a specific skill area that the student 
+            needs to improve on, which is reading comprehension. By targeting this area, we can track the student's 
+            progress more effectively throughout the year.", 
+            "potential_alternative_goals": ["By the end of the school year, the student will increase 
+            their vocabulary knowledge by correctly defining and using at least 10 new grade-level 
+            words in writing assignments with at least 80% accuracy.", "By the end of the school year, 
+            the student will improve their fluency by being able to read a grade-level passage aloud with correct 
+            pronunciation and expression at a rate of 100 words per minute."]
+            };`,
+            "Other-Math": `You are a special education expert. Write an individualized education 
+            plan (IEP) goal for a special education teacher to improve math skills for a ` + otherGradeInput + ` student. 
+            Here is addtional information from the teacher on how the student can grow: ` + writtenInput + "." + 
+            "Explain why you chose this goal and always include potential alternative goals. Format the response as a JSON object. " +
+            "Do not include any other information in the response. " + "Example:" + 
+            `{
+            "IEP_goal": "By the end of the school year, the student will improve their 
+            reading comprehension skills to accurately summarize a grade-level passage in writing, 
+            with at least 80% accuracy as measured by teacher-generated assessments.", 
+            "reason": "I chose this goal because it focuses on a specific skill area that the student 
+            needs to improve on, which is reading comprehension. By targeting this area, we can track the student's 
+            progress more effectively throughout the year.", 
+            "potential_alternative_goals": ["By the end of the school year, the student will increase 
+            their vocabulary knowledge by correctly defining and using at least 10 new grade-level 
+            words in writing assignments with at least 80% accuracy.", "By the end of the school year, 
+            the student will improve their fluency by being able to read a grade-level passage aloud with correct 
+            pronunciation and expression at a rate of 100 words per minute."]
+            };`,
+            "Other-Reading": `You are a special education expert. Write an individualized education 
+            plan (IEP) goal for a special education teacher to improve reading for a ` + otherGradeInput + ` student. 
+            Here is addtional information from the teacher on how the student can grow: ` + writtenInput + "." + 
+            "Explain why you chose this goal and always include potential alternative goals. Format the response as a JSON object. " +
+            "Do not include any other information in the response. " + "Example:" + 
+            `{
+            "IEP_goal": "By the end of the school year, the student will improve their 
+            reading comprehension skills to accurately summarize a grade-level passage in writing, 
+            with at least 80% accuracy as measured by teacher-generated assessments.", 
+            "reason": "I chose this goal because it focuses on a specific skill area that the student 
+            needs to improve on, which is reading comprehension. By targeting this area, we can track the student's 
+            progress more effectively throughout the year.", 
+            "potential_alternative_goals": ["By the end of the school year, the student will increase 
+            their vocabulary knowledge by correctly defining and using at least 10 new grade-level 
+            words in writing assignments with at least 80% accuracy.", "By the end of the school year, 
+            the student will improve their fluency by being able to read a grade-level passage aloud with correct 
+            pronunciation and expression at a rate of 100 words per minute."]
+            };`,
+            "Elementary-Other": `You are a special education expert. Write an individualized education 
+            plan (IEP) goal for a special education teacher to improve ` + otherSubjectInput + ` for an elementary student. 
+            Here is addtional information from the teacher on how the student can grow: ` + writtenInput + "." + 
+            "Explain why you chose this goal and always include potential alternative goals. Format the response as a JSON object. " +
+            "Do not include any other information in the response. " + "Example:" + 
+            `{
+            "IEP_goal": "By the end of the school year, the student will improve their 
+            reading comprehension skills to accurately summarize a grade-level passage in writing, 
+            with at least 80% accuracy as measured by teacher-generated assessments.", 
+            "reason": "I chose this goal because it focuses on a specific skill area that the student 
+            needs to improve on, which is reading comprehension. By targeting this area, we can track the student's 
+            progress more effectively throughout the year.", 
+            "potential_alternative_goals": ["By the end of the school year, the student will increase 
+            their vocabulary knowledge by correctly defining and using at least 10 new grade-level 
+            words in writing assignments with at least 80% accuracy.", "By the end of the school year, 
+            the student will improve their fluency by being able to read a grade-level passage aloud with correct 
+            pronunciation and expression at a rate of 100 words per minute."]
+            };`,
+            "Middle School-Other": `You are a special education expert. Write an individualized education 
+            plan (IEP) goal for a special education teacher to improve ` + otherSubjectInput + ` for a middle school student. 
+            Here is addtional information from the teacher on how the student can grow: ` + writtenInput + "." + 
+            "Explain why you chose this goal and always include potential alternative goals. Format the response as a JSON object. " +
+            "Do not include any other information in the response. " + "Example:" + 
+            `{
+            "IEP_goal": "By the end of the school year, the student will improve their 
+            reading comprehension skills to accurately summarize a grade-level passage in writing, 
+            with at least 80% accuracy as measured by teacher-generated assessments.", 
+            "reason": "I chose this goal because it focuses on a specific skill area that the student 
+            needs to improve on, which is reading comprehension. By targeting this area, we can track the student's 
+            progress more effectively throughout the year.", 
+            "potential_alternative_goals": ["By the end of the school year, the student will increase 
+            their vocabulary knowledge by correctly defining and using at least 10 new grade-level 
+            words in writing assignments with at least 80% accuracy.", "By the end of the school year, 
+            the student will improve their fluency by being able to read a grade-level passage aloud with correct 
+            pronunciation and expression at a rate of 100 words per minute."]
+            };`,
+            "High School-Other": `You are a special education expert. Write an individualized education 
+            plan (IEP) goal for a special education teacher to improve ` + otherSubjectInput + ` for a high school student. 
+            Here is addtional information from the teacher on how the student can grow: ` + writtenInput + "." + 
+            "Explain why you chose this goal and always include potential alternative goals. Format the response as a JSON object. " +
+            "Do not include any other information in the response. " + "Example:" + 
+            `{
+            "IEP_goal": "By the end of the school year, the student will improve their 
+            reading comprehension skills to accurately summarize a grade-level passage in writing, 
+            with at least 80% accuracy as measured by teacher-generated assessments.", 
+            "reason": "I chose this goal because it focuses on a specific skill area that the student 
+            needs to improve on, which is reading comprehension. By targeting this area, we can track the student's 
+            progress more effectively throughout the year.", 
+            "potential_alternative_goals": ["By the end of the school year, the student will increase 
+            their vocabulary knowledge by correctly defining and using at least 10 new grade-level 
+            words in writing assignments with at least 80% accuracy.", "By the end of the school year, 
+            the student will improve their fluency by being able to read a grade-level passage aloud with correct 
+            pronunciation and expression at a rate of 100 words per minute."]
+            };`,
+            "Other-Other": `You are a special education expert. Write an individualized education 
+            plan (IEP) goal for a special education teacher to improve ` + otherSubjectInput + ` for a ` + otherGradeInput + ` student. 
             Here is addtional information from the teacher on how the student can grow: ` + writtenInput + "." + 
             "Explain why you chose this goal and always include potential alternative goals. Format the response as a JSON object. " +
             "Do not include any other information in the response. " + "Example:" + 
