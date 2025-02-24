@@ -7,13 +7,16 @@ const modalCardStyling = "flex justify-center bg-white p-6 rounded-lg shadow-lg 
 
 const Modal = ({ isOpen, onClose, children }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [animateOpen, setAnimateOpen] = useState(false);
 
   useEffect(() => {
     console.log('isOpen', isOpen);
     if (isOpen) {
       setIsVisible(true);
+      setTimeout(() => setAnimateOpen(true), 10);
     } else {
       // Trigger fade-out effect by delaying the modal closure
+      setAnimateOpen(false);
       const timer = setTimeout(() => setIsVisible(false), 300); // match the duration
       return () => clearTimeout(timer);
     }
@@ -23,13 +26,21 @@ const Modal = ({ isOpen, onClose, children }) => {
 
   return createPortal(
     <div
-      className={`${modalBackgroundStyling} ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+      className={`${modalBackgroundStyling} ${animateOpen ? 'opacity-100' : 'opacity-0'}`}
       onClick={onClose}
     >
       <div
-        className={`${modalCardStyling} ${isOpen ? 'scale-100' : 'scale-90'}`}
+        className={`${modalCardStyling} ${animateOpen ? 'scale-100' : 'scale-90'}`}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 mr-2 text-gray-500 hover:text-gray-800 font-karla text-xl"
+          aria-label="Close"
+          >
+            x
+        </button>
         {children}
       </div>
     </div>,
