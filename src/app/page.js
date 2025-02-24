@@ -145,7 +145,12 @@ export default function HomePage() {
               onClick={() => setSelectedSubject('Reading')}
               customStyles={subjectButtonStyle + `${selectedSubject === 'Reading' ? 'bg-green-300' : 'bg-green-100'}`}>Reading
               </GenButton>
-              <input type="text" placeholder="Other (type here)" className={subjectOtherInputStyle} />
+              <input 
+              type="text" 
+              placeholder="Other (type here)" 
+              className={subjectOtherInputStyle}
+              onClick={() => setSelectedSubject('Other')}
+               />
             </div>
           </div>
           <div className="w-full md:max-w-1/3 h-full p-4 mb-6">
