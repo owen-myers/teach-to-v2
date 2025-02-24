@@ -124,7 +124,7 @@ export default function HomePage() {
               </GenButton>
               <input 
               type="text" 
-              placeholder="Other (type here)" 
+              placeholder="Other" 
               className={gradeOtherInputStyle} 
               onInput={() => setSelectedGrade('Other')} 
               />
@@ -147,7 +147,7 @@ export default function HomePage() {
               </GenButton>
               <input 
               type="text" 
-              placeholder="Other (type here)" 
+              placeholder="Other" 
               className={subjectOtherInputStyle}
               onInput={() => setSelectedSubject('Other')}
                />
@@ -155,7 +155,7 @@ export default function HomePage() {
           </div>
           <div className="w-full md:max-w-1/3 h-full p-4 mb-6">
             <p className={homeLabelStyle}>How can the student grow?</p>
-            <UserInput type="text" placeholder="Write something here..." value={writtenInput} onChange={(e) => setWrittenInput(e.target.value)}/>
+            <UserInput type="text" placeholder="Improving comprehension skills" value={writtenInput} onChange={(e) => setWrittenInput(e.target.value)}/>
           </div>
         </div>
         <div className="flex justify-center">
