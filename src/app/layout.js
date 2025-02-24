@@ -8,7 +8,9 @@ export default function RootLayout({ children }) {
       <body>
         <Nav />
         {children}
-        <a href="/terms" className="flex font-karla justify-center p-12 text-sm text-gray-800">Terms</a>
+        <div className="flex justify-center p-12">
+          <a href="/terms" className="font-karla text-sm text-gray-800">Terms</a>
+        </div>
       </body>
     </html>
     
