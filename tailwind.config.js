@@ -9,8 +9,9 @@ module.exports = {
     extend: {
       fontFamily: {
         title: ['Italiana Regular', 'sans-serif' ],
-        body: ['Lexend Exa Normal', 'sans-serif'],
+        karla: ['Karla', 'sans-serif'],
         bold: ['Lexend Exa Bold', 'sans-serif'],
+        lora: ['Lora', 'serif'],
       },
     },
   },

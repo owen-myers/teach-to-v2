@@ -1,11 +1,15 @@
 
 const TermsOfUse = () => {
-  return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">Terms of Use</h1>
-      <p className="text-gray-600 mb-6 font-body">Last Updated: Sept 8, 2024</p>
 
-      <section className="mb-6 font-body">
+  const termsSectionStyling = "mb-8 font-karla";
+  const termsHeaderStyling = "text-2xl font-lora mb-4";
+
+  return (
+    <div className="max-w-4xl mx-auto p-8">
+      <h1 className="text-3xl font-bold font-lora mb-4">Terms of Use</h1>
+      <p className="text-gray-600 mb-6 font-karla">Last Updated: Sept 8, 2024</p>
+
+      <section className={termsSectionStyling}>
         <p>
           Welcome to TeachTo, a tool designed to assist
           special education teachers in generating Individualized Education
@@ -19,8 +23,8 @@ const TermsOfUse = () => {
         </p>
       </section>
 
-      <section className="mb-6 font-body">
-        <h2 className="text-2xl font-bold mb-2">1. Use of the Service</h2>
+      <section className={termsSectionStyling}>
+        <h2 className={termsHeaderStyling}>1. Use of the Service</h2>
         <p>
           The Service is provided for educational purposes only. It is intended
           to assist teachers by generating suggested IEP goals based on the
@@ -31,14 +35,15 @@ const TermsOfUse = () => {
         </p>
       </section>
 
-      <section className="mb-6 font-body">
-        <h2 className="text-2xl font-bold mb-2">2. User Data and Privacy</h2>
+      <section className={termsSectionStyling}>
+        <h2 className={termsHeaderStyling}>2. User Data and Privacy</h2>
         <p>
           We do not collect or store any personal information or data from users
           of the Service. Any input provided by the user during their
           interaction with the Service is used solely to generate IEP goal
           suggestions in real-time and is not retained after the session.
         </p>
+        <br />
         <p>
           Please note that while we do not store your data, you are responsible
           for safeguarding any information you input into the Service,
@@ -48,8 +53,8 @@ const TermsOfUse = () => {
         </p>
       </section>
 
-      <section className="mb-6 font-body">
-        <h2 className="text-2xl font-bold mb-2">3. Intellectual Property</h2>
+      <section className={termsSectionStyling}>
+        <h2 className={termsHeaderStyling}>3. Intellectual Property</h2>
         <p>
           All content and materials made available through the Service,
           including but not limited to text, images, and software, are the
@@ -59,8 +64,8 @@ const TermsOfUse = () => {
         </p>
       </section>
 
-      <section className="mb-6 font-body">
-        <h2 className="text-2xl font-bold mb-2">4. Disclaimer of Warranties</h2>
+      <section className={termsSectionStyling}>
+        <h2 className={termsHeaderStyling}>4. Disclaimer of Warranties</h2>
         <p>
           The Service is provided "as is" and "as available" without any
           warranties of any kind, either express or implied. Let Teachers Teach LLC
@@ -69,8 +74,8 @@ const TermsOfUse = () => {
         </p>
       </section>
 
-      <section className="mb-6 font-body">
-        <h2 className="text-2xl font-bold mb-2">5. Limitation of Liability</h2>
+      <section className={termsSectionStyling}>
+        <h2 className={termsHeaderStyling}>5. Limitation of Liability</h2>
         <p>
           In no event shall Let Teachers Teach LLC be liable for any damages
           arising out of your use of the Service, including but not limited to
@@ -79,8 +84,8 @@ const TermsOfUse = () => {
         </p>
       </section>
 
-      <section className="mb-6 font-body">
-        <h2 className="text-2xl font-bold mb-2">
+      <section className={termsSectionStyling}>
+        <h2 className={termsHeaderStyling}>
           6. Modifications to Terms of Use
         </h2>
         <p>
@@ -91,8 +96,8 @@ const TermsOfUse = () => {
         </p>
       </section>
 
-      <section className="mb-6 font-body">
-        <h2 className="text-2xl font-bold mb-2">7. Governing Law</h2>
+      <section className={termsSectionStyling}>
+        <h2 className={termsHeaderStyling}>7. Governing Law</h2>
         <p>
           These Terms of Use shall be governed by and construed in accordance
           with the laws of the State of Ohio, without regard to its conflict
@@ -100,8 +105,8 @@ const TermsOfUse = () => {
         </p>
       </section>
 
-      <section className="mb-6 font-body">
-        <h2 className="text-2xl font-bold mb-2">8. Contact Information</h2>
+      <section className={termsSectionStyling}>
+        <h2 className={termsHeaderStyling}>8. Contact Information</h2>
         <p>
           If you have any questions about these Terms of Use, please shoot us an email
           at owen@iukaimpact.com.

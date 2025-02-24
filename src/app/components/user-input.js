@@ -1,12 +1,10 @@
-import { useEffect } from "react";
 
-const inputStyling = "p-4 w-full border-2 text-sm border-black rounded-lg resize-none font-body";
+const inputStyling = "bg-violet-100 p-4 w-full min-h-[108px] border text-sm font-karla border-violet-900 rounded-md";
 
 const UserInput = ({ question, ...props }) => {
     return (
-        <div className="p-4">
-            <label className="block text-sm font-body p-2">{question}</label>
-            <input 
+        <div>
+            <textarea
             className={inputStyling}
             {...props}
             />

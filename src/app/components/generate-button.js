@@ -1,14 +1,12 @@
 
-const GenButton = ({ children, onClick }) => {
+const GenButton = ({ children, onClick, customStyles }) => {
     return (
-        <div className="p-4">
             <button
-                className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-5 rounded-xl"
+                className={`py-3 px-5 rounded-md ${customStyles}`}
                 onClick={onClick}
             >
                 {children}
             </button>
-        </div>
     );
 };
 
