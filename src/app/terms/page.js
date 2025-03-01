@@ -16,6 +16,7 @@ const TermsOfUse = () => {
           Program (IEP) goals. Please read these Terms of Use carefully before
           using our service.
         </p>
+        <br />
         <p>
           By accessing or using TeachTo (the “Service”), you
           agree to be bound by these Terms of Use. If you do not agree to these

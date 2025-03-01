@@ -10,6 +10,10 @@ export default function Nav() {
                 <div>
                 <TeachToLogo />
                 </div>
+                <div className="font-karla text-md space-x-4">
+                <a href="/">Sign up</a>
+                <a href="/">Log in</a>
+                </div>
             </nav>
         </div>
     );
