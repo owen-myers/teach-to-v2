@@ -32,7 +32,7 @@ export default function SignIn() {
           },
      });
     if (error) {
-      setMessage("Error sending OTP");
+      setMessage("Error sending one-time password. Please try again.");
     } else {
       setMessage("Check your email for a sign-in link!");
     }
