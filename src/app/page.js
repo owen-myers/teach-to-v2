@@ -47,7 +47,7 @@ export default function Home() {
         <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className={cardStyle}>
             <h3 className="text-lg font-semibold font-lora text-gray-900 mb-2">
-              Quick Generation
+              Generate quickly
             </h3>
             <p className="font-karla text-gray-600">
               Create comprehensive IEP goals in minutes, not hours
@@ -56,19 +56,19 @@ export default function Home() {
           
           <div className={cardStyle}>
             <h3 className="text-lg font-semibold font-lora text-gray-900 mb-2">
-              Personalized Goals
+              No data recorded
             </h3>
             <p className="font-karla text-gray-600">
-              Tailored to each student's unique learning needs
+              Data is not stored or shared with anyone
             </p>
           </div>
           
           <div className={cardStyle}>
             <h3 className="text-lg font-semibold font-lora text-gray-900 mb-2">
-              Professional Standards
+              Aligned with standards
             </h3>
             <p className="font-karla text-gray-600">
-              Aligned with educational best practices and standards
+              Measurable, achievable, and tailored to each student
             </p>
           </div>
         </div>
