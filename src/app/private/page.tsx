@@ -1,16 +1,14 @@
 'use client';
 
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 import GenButton from "../components/generate-button";
 import UserInput from "../components/user-input";
 import Image from "next/image";
 import FrontPageTeacher from "../../../public/Teacher student amico.svg";
 import LoadingSpinner from "../components/loading-spinner";
 import Modal from "../components/modal";
-import { redirect } from 'next/navigation';
-
-import { createClient } from '../utils/supabase/client'
+import { getUser } from "../actions/getUser";
 
 const gradeOtherInputStyle = `text-blue-900 border border-blue-900 border-dashed relative text-sm font-karla
 transition-colors duration-300 hover:bg-blue-200 rounded-md pl-4`;
@@ -33,28 +31,60 @@ const responseTextStyle = "font-karla text-md pl-6";
 
 const responseListStyle = "font-karla text-md pl-6 mb-4";
 
-export default async function PrivatePage() {
-  const supabase = await createClient()
+// Base button styles
+const baseGradeButtonStyle = `text-blue-900 border border-blue-900 relative text-sm font-karla 
+transition-colors duration-300 hover:bg-blue-300`;
 
-  const { data, error } = await supabase.auth.getUser()
-  if (error || !data?.user) {
-    redirect('/login')
-  }
-  //state toggle for inputs
+const baseSubjectButtonStyle = `text-green-900 border border-green-900 relative text-sm font-karla
+transition-colors duration-300 hover:bg-green-300`;
+
+export default function PrivatePage() {
+  const router = useRouter();
   const [selectedGrade, setSelectedGrade] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [writtenInput, setWrittenInput] = useState("");
   const [chatResponseData, setChatResponseData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
-  //styles for grade buttons
-  const gradeButtonStyle = `bg-blue-100 text-blue-900 border border-blue-900 relative text-sm font-karla 
-  transition-colors duration-300 active:bg-blue-200 hover:bg-blue-300`;
+  // Helper function to get grade button style
+  const getGradeButtonStyle = (grade) => {
+    return `${baseGradeButtonStyle} ${
+      selectedGrade === grade 
+        ? 'bg-blue-300' 
+        : 'bg-blue-100'
+    }`;
+  };
 
-  //styles for subject buttons
-  const subjectButtonStyle = `bg-green-100 text-green-900 border border-green-900 relative text-sm font-karla
-  transition-colors duration-300 hover:bg-green-300`;
+  // Helper function to get subject button style
+  const getSubjectButtonStyle = (subject) => {
+    return `${baseSubjectButtonStyle} ${
+      selectedSubject === subject 
+        ? 'bg-green-300' 
+        : 'bg-green-100'
+    }`;
+  };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const userData = await getUser();
+        setUser(userData);
+        if (!userData) {
+          router.push('/login');
+        }
+      } catch (error) {
+        console.error('Auth error:', error);
+        router.push('/login');
+      } finally {
+        setIsCheckingAuth(false);
+      }
+    };
+
+    checkAuth();
+  }, [router]);
 
   //handles submit + API function call
   const handleSubmit = async () => {
@@ -98,37 +128,33 @@ export default async function PrivatePage() {
     }
   };
 
+  if (isCheckingAuth) {
+    return <div className="min-h-screen flex items-center justify-center">
+      <LoadingSpinner />
+    </div>;
+  }
+
+  if (!user) {
+    return null; // Router will handle redirect
+  }
+
   return (
     <div>
-      <div className="flex flex-col md:flex-row w-9/10 sm:w-3/4 mx-auto items-center">
-        <div className="flex flex-col w-2/3 items-center sm:items-left mb-12">
-          <h1 className="font-lora text-4xl pb-4">Get some help with IEP goals</h1>
-          <h3 className="font-karla text-xl">Try generating one below</h3>
-        </div>
-        <div>
-          <Image
-          src={ FrontPageTeacher }
-          alt="A teacher with her student."
-          width={250}
-          height={250}
-          />
-        </div>
-      </div>
         <div className="flex flex-col md:flex-row md:space-x-4 md:pl-16 md:pr-16 md:pt-12 md:pb-4 justify-center"> 
           <div className="w-full md:w-96 h-full p-4">
             <p className={homeLabelStyle}>Grade</p>
             <div className="grid grid-cols-2 gap-4">
               <GenButton 
               onClick={() => setSelectedGrade('Elementary')}
-              customStyles={gradeButtonStyle + `${selectedGrade === 'Elementary' ? 'bg-blue-300' : 'bg-blue-100'}`}>Elementary
+              customStyles={getGradeButtonStyle('Elementary')}>Elementary
               </GenButton>
               <GenButton 
               onClick={() => setSelectedGrade('Middle School')}
-              customStyles={gradeButtonStyle + `${selectedGrade === 'Middle School' ? 'bg-blue-300' : 'bg-blue-100'}`}>Middle School
+              customStyles={getGradeButtonStyle('Middle School')}>Middle School
               </GenButton>
               <GenButton 
               onClick={() => setSelectedGrade('High School')}
-              customStyles={gradeButtonStyle + `${selectedGrade === 'High School' ? 'bg-blue-300' : 'bg-blue-100'}`}>High School
+              customStyles={getGradeButtonStyle('High School')}>High School
               </GenButton>
               <input 
               type="text" 
@@ -143,15 +169,15 @@ export default async function PrivatePage() {
             <div className="grid grid-cols-2 gap-4">
               <GenButton 
               onClick={() => setSelectedSubject('Behavior')}
-              customStyles={subjectButtonStyle + `${selectedSubject === 'Behavior' ? 'bg-green-300' : 'bg-green-100'}`}>Behavior
+              customStyles={getSubjectButtonStyle('Behavior')}>Behavior
               </GenButton>
               <GenButton 
               onClick={() => setSelectedSubject('Math')}
-              customStyles={subjectButtonStyle + `${selectedSubject === 'Math' ? 'bg-green-300' : 'bg-green-100'}`}>Math
+              customStyles={getSubjectButtonStyle('Math')}>Math
               </GenButton>
               <GenButton 
               onClick={() => setSelectedSubject('Reading')}
-              customStyles={subjectButtonStyle + `${selectedSubject === 'Reading' ? 'bg-green-300' : 'bg-green-100'}`}>Reading
+              customStyles={getSubjectButtonStyle('Reading')}>Reading
               </GenButton>
               <input 
               type="text" 
@@ -201,4 +227,4 @@ export default async function PrivatePage() {
         </Modal>
     </div>
   );
-  };
+}

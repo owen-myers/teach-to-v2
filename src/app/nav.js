@@ -1,21 +1,67 @@
+'use client';
 
+import { useEffect, useState } from "react";
 import TeachToLogo from "./components/teachto-logo";
+import { getUser } from "./actions/getUser";
+import Link from "next/link";
 
-const navLinkStyling = "mr-8 transition-colors font-karla duration-300 ease-in-out hover:text-gray-500 focus:text-gray-500 active:text-gray-500";
-const getStartedButtonStyling = "bg-blue-500 hover:bg-blue-700 text-white font-karla py-2 px-4 rounded-2xl transition duration-300"
+const navLinkStyling = "transition-colors font-karla duration-300 ease-in-out hover:text-gray-500";
+const getStartedButtonStyling = "bg-violet-500 hover:bg-violet-600 text-white font-karla py-2 px-4 rounded-lg transition duration-300";
+const footerLinkStyling = "font-karla text-sm text-gray-500 hover:text-gray-700 transition-colors duration-300";
 
 export default function Nav() {
+    const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const loadUser = async () => {
+            try {
+                const userData = await getUser();
+                setUser(userData);
+            } catch (error) {
+                console.error('Error loading user:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        loadUser();
+    }, []);
+
     return (
-        <div>
-            <nav className="py-8 pr-6 sm:pl-14 sm:pr-14 flex justify-between items-center">
-                <div>
-                <TeachToLogo />
-                </div>
-                <div className="sm:pr-8">
-                <a href="/login" className={navLinkStyling}>Log in</a>
-                <a href="/login" className={getStartedButtonStyling}>Get started &rarr;</a>
-                </div>
-            </nav>
-        </div>
+        <>
+            <div className="w-full">
+                <nav className="py-4 px-4 sm:py-6 sm:px-8 md:px-14 flex justify-between items-center">
+                    <div>
+                        <TeachToLogo />
+                    </div>
+                    <div className="flex items-center gap-3 sm:gap-6">
+                        {isLoading ? (
+                            <div className="w-6 h-6 border-2 border-t-transparent border-gray-400 rounded-full animate-spin"></div>
+                        ) : user ? (
+                            <>
+                                <Link href="/profile" className={navLinkStyling}>
+                                    {user.user_metadata?.full_name || user.email}
+                                </Link>
+                                <Link href="/private" className={getStartedButtonStyling}>
+                                    Dashboard
+                                    <span className="hidden sm:inline">&nbsp;&rarr;</span>
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link href="/login" className={navLinkStyling}>
+                                    Log in
+                                </Link>
+                                <Link href="/login" className={getStartedButtonStyling}>
+                                    Get started
+                                    <span className="hidden sm:inline">&nbsp;&rarr;</span>
+                                </Link>
+                            </>
+                        )}
+                    </div>
+                </nav>
+            </div>
+        </>
     );
-};
+}

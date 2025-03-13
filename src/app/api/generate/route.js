@@ -62,8 +62,8 @@ export async function POST(req) {
         const promptPairData = promptMessagePairs[key];
 
         const promptMessageToSend = promptPairData + `Explain why you chose this goal and always include 
-            potential alternative goals. Format the response as a JSON object. Do not include any other information in the 
-            response. Example: ` +
+            potential alternative goals. Format the output as a JSON object. Do not include any other information in the response, 
+            including the \`\`\` json prefix and \`\`\` suffix. Example: ` +
             `{
             "IEP_goal": "By the end of the school year, the student will improve their 
             reading comprehension skills to accurately summarize a grade-level passage in writing, 

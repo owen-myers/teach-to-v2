@@ -1,63 +1,74 @@
 'use client';
 
-import Link from 'next/link';
+import GenButton from "./components/generate-button";
+import Image from "next/image";
 import { useRouter } from 'next/navigation';
+import FrontPageTeacher from "../../public/Teacher student amico.svg";
 
 export default function Home() {
   const router = useRouter();
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col items-center justify-center p-4">
-      <div className="max-w-4xl w-full text-center space-y-8">
-        <h1 className="text-5xl font-bold text-gray-900 mb-4">
-          Welcome to Teach-to
-        </h1>
-        
-        <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          Your personal teaching assistant platform. Sign in to start creating and managing your lessons.
-        </p>
+  const cardStyle = "p-6 rounded-xl shadow-md border border-sm";
 
-        <div className="space-y-4">
-          <button
-            onClick={() => router.push('/login')}
-            className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200"
-          >
-            Sign In to Get Started
-          </button>
-          
-          <div className="text-sm text-gray-500 mt-4">
-            New to Teach-to?{' '}
-            <Link href="/auth/register" className="text-blue-600 hover:text-blue-800 font-medium">
-              Create an account
-            </Link>
+  return (
+    <div className="min-h-screen">
+      <div className="max-w-6xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-12">
+          {/* Left side content */}
+          <div className="flex-1 text-center md:text-left">
+            <h1 className="font-lora text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+              Generate IEP or 504 goals in just three clicks
+            </h1>
+            <p className="font-karla text-xl text-gray-600 mb-8 max-w-2xl">
+              TeachTo uses your expert guidance to suggest simple and measurable IEP and 504 goals
+            </p>
+            <GenButton 
+              onClick={() => router.push('/login')}
+              customStyles="bg-violet-500 text-white text-lg font-karla px-8 py-4 
+                transition-colors duration-300 hover:bg-violet-600">
+              Try it for free
+            </GenButton>
+          </div>
+
+          {/* Right side image */}
+          <div className="flex-1 flex justify-center">
+            <Image
+              src={FrontPageTeacher}
+              alt="Teacher helping a student"
+              width={500}
+              height={500}
+              priority
+              className="w-full max-w-md"
+            />
           </div>
         </div>
 
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-6 bg-white rounded-xl shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Personalized Learning
+        {/* Feature section */}
+        <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className={cardStyle}>
+            <h3 className="text-lg font-semibold font-lora text-gray-900 mb-2">
+              Quick Generation
             </h3>
-            <p className="text-gray-600">
-              Create customized lesson plans tailored to your teaching style
+            <p className="font-karla text-gray-600">
+              Create comprehensive IEP goals in minutes, not hours
             </p>
           </div>
           
-          <div className="p-6 bg-white rounded-xl shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Track Progress
+          <div className={cardStyle}>
+            <h3 className="text-lg font-semibold font-lora text-gray-900 mb-2">
+              Personalized Goals
             </h3>
-            <p className="text-gray-600">
-              Monitor student engagement and learning outcomes
+            <p className="font-karla text-gray-600">
+              Tailored to each student's unique learning needs
             </p>
           </div>
           
-          <div className="p-6 bg-white rounded-xl shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Collaborative Tools
+          <div className={cardStyle}>
+            <h3 className="text-lg font-semibold font-lora text-gray-900 mb-2">
+              Professional Standards
             </h3>
-            <p className="text-gray-600">
-              Share resources and interact with other educators
+            <p className="font-karla text-gray-600">
+              Aligned with educational best practices and standards
             </p>
           </div>
         </div>
