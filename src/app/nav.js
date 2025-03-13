@@ -7,7 +7,6 @@ import Link from "next/link";
 
 const navLinkStyling = "transition-colors font-karla duration-300 ease-in-out hover:text-gray-500";
 const getStartedButtonStyling = "bg-violet-500 hover:bg-violet-600 text-white font-karla py-2 px-4 rounded-lg transition duration-300";
-const footerLinkStyling = "font-karla text-sm text-gray-500 hover:text-gray-700 transition-colors duration-300";
 
 export default function Nav() {
     const [user, setUser] = useState(null);
@@ -44,7 +43,7 @@ export default function Nav() {
                                     {user.user_metadata?.full_name || user.email}
                                 </Link>
                                 <Link href="/private" className={getStartedButtonStyling}>
-                                    Dashboard
+                                    Generator
                                     <span className="hidden sm:inline">&nbsp;&rarr;</span>
                                 </Link>
                             </>
