@@ -35,7 +35,7 @@ export default function Nav() {
                     <div>
                         <TeachToLogo />
                     </div>
-                    <div className="flex items-center gap-3 sm:gap-6">
+                    <div className="flex items-center gap-3 sm:gap-6 p-12">
                         {isLoading ? (
                             <div className="w-6 h-6 border-2 border-t-transparent border-gray-400 rounded-full animate-spin"></div>
                         ) : user ? (
