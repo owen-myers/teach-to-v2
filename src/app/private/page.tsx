@@ -190,7 +190,7 @@ export default function PrivatePage() {
             <UserInput type="text" placeholder="Improving comprehension skills" value={writtenInput} onChange={(e) => setWrittenInput(e.target.value)} question={undefined}/>
           </div>
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center pb-2">
             <GenButton onClick={handleSubmit} customStyles={generateButtonHomeStyle}>Generate</GenButton>
         </div>
         {/* Modal Component */}

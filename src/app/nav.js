@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import TeachToLogo from "./components/teachto-logo";
 import { getUser } from "./actions/getUser";
 import Link from "next/link";
+import { usePathname } from 'next/navigation';
 
 const navLinkStyling = "transition-colors font-karla duration-300 ease-in-out hover:text-gray-500";
 const getStartedButtonStyling = "bg-violet-500 hover:bg-violet-600 text-white font-karla py-2 px-4 rounded-lg transition duration-300";
@@ -12,6 +13,7 @@ export default function Nav() {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const pathname = usePathname();
 
     useEffect(() => {
         const loadUser = async () => {
@@ -20,13 +22,14 @@ export default function Nav() {
                 setUser(userData);
             } catch (error) {
                 console.error('Error loading user:', error);
+                setUser(null);
             } finally {
                 setIsLoading(false);
             }
         };
 
         loadUser();
-    }, []);
+    }, [pathname]); // Reload user state when pathname changes (e.g., after logout)
 
     return (
         <>

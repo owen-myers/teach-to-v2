@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { getUser } from '../actions/getUser';
+import { logout } from '../actions/logout';
 import LoadingSpinner from '../components/loading-spinner';
 
 export default function ProfilePage() {
@@ -42,6 +43,16 @@ export default function ProfilePage() {
             <div>
               <label className="block text-sm font-karla text-gray-700">Email</label>
               <p className="mt-1 text-lg font-karla text-gray-900">{user.email}</p>
+            </div>
+            <div className="pt-4">
+              <form action={logout}>
+                <button
+                  type="submit"
+                  className="hover:bg-red-100 border-2 border-red-500 text-red-500 font-karla py-2 px-4 rounded-lg transition duration-300"
+                >
+                  Log out
+                </button>
+              </form>
             </div>
           </div>
         </div>
