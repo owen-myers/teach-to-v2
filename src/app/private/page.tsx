@@ -4,8 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import GenButton from "../components/generate-button";
 import UserInput from "../components/user-input";
-import Image from "next/image";
-import FrontPageTeacher from "../../../public/Teacher student amico.svg";
 import LoadingSpinner from "../components/loading-spinner";
 import Modal from "../components/modal";
 import { getUser } from "../actions/getUser";
