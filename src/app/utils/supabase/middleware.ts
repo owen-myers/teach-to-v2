@@ -46,7 +46,7 @@ export async function updateSession(request: NextRequest) {
   // If user is not logged in and trying to access a protected route
   if (!user && !isPublicRoute && request.nextUrl.pathname !== '/') {
     const url = request.nextUrl.clone()
-    url.pathname = '/'
+    url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
