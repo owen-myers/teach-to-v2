@@ -1,32 +1,15 @@
-/*
-import { login, signup } from './actions'
-
-export default function LoginPage() {
-  return (
-    <form>
-      <label htmlFor="email">Email:</label>
-      <input id="email" name="email" type="email" required />
-      <label htmlFor="password">Password:</label>
-      <input id="password" name="password" type="password" required />
-      <button formAction={login}>Log in</button>
-      <button formAction={signup}>Sign up</button>
-    </form>
-  )
-}
-*/
-
 "use client";
 
 import { useState } from "react";
 import { createClient } from "../utils/supabase/client";
 
-export default function SignIn() {
+export default function SignUp() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClient();
 
-  const handleSignIn = async () => {
+  const handleSignUp = async () => {
     if (!email) {
       setMessage("Please enter your email address");
       return;
@@ -43,9 +26,9 @@ export default function SignIn() {
     });
 
     if (error) {
-      setMessage("There was a problem sending the sign-in link. Please try again.");
+      setMessage("There was a problem sending the sign-up link. Please try again.");
     } else {
-      setMessage("Check your email for a secure log-in or sign-up link!");
+      setMessage("Check your email for a secure sign-up link!");
     }
     setIsLoading(false);
   };
@@ -55,10 +38,10 @@ export default function SignIn() {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h2 className="font-lora text-3xl font-bold text-gray-900">
-            Hi there!
+            Join TeachTo
           </h2>
           <p className="mt-2 font-karla text-gray-600">
-            We'll send you a secure link to log in or sign up instantly
+            We'll send you a secure link to create your account instantly
           </p>
         </div>
 
@@ -79,14 +62,14 @@ export default function SignIn() {
           </div>
 
           <button
-            onClick={handleSignIn}
+            onClick={handleSignUp}
             disabled={isLoading}
             className={`w-full py-3 px-4 rounded-lg font-karla text-white transition duration-200 button-animation
               ${isLoading 
                 ? 'bg-violet-400 cursor-not-allowed' 
                 : 'bg-violet-500 hover:bg-violet-600'}`}
           >
-            {isLoading ? 'Sending link...' : 'Send link'}
+            {isLoading ? 'Sending link...' : 'Create account'}
           </button>
 
           {message && (
@@ -100,6 +83,4 @@ export default function SignIn() {
       </div>
     </div>
   );
-}
-
-
+} 

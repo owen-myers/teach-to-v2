@@ -1,5 +1,6 @@
 import "./styles/globals.css";
 import Nav from "./nav";
+import Footer from "./components/footer";
 
 export const metadata = {
   title: "TeachTo - IEP & 504 Goal-Writing Assistant",
@@ -44,11 +45,13 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className="flex flex-col min-h-screen">
         <Nav />
-        {children}
+        <main className="flex-grow">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
-    
   );
 }

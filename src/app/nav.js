@@ -34,7 +34,7 @@ export default function Nav() {
     return (
         <>
             <div className="w-full">
-                <nav className="py-4 px-4 sm:py-6 sm:px-8 md:px-14 flex justify-between items-center">
+                <nav className="py-2 px-4 sm:px-8 md:px-14 flex justify-between items-center">
                     <div>
                         <TeachToLogo />
                     </div>
