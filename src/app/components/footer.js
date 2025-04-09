@@ -19,7 +19,7 @@ export default function Footer() {
               </Link>
             </div>
             <p className="text-gray-500 text-sm font-karla">
-              &copy; {currentYear} Let Teachers Teach LLC. All rights reserved.
+              &copy; {currentYear} Let Teachers Teach LLC
             </p>
           </div>
         </div>
