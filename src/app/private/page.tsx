@@ -22,7 +22,7 @@ hover:bg-violet-600`;
 const homeLabelStyle = "font-karla pb-2";
 
 //style for response headers
-const responseHeaderStyle = "text-xl font-lora mb-6 pl-6";
+const responseHeaderStyle = "text-xl font-lora mb-6 pl-6 text-violet-900";
 
 //style for response text
 const responseTextStyle = "font-karla text-md pl-6";
@@ -46,6 +46,7 @@ export default function PrivatePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Helper function to get grade button style
   const getGradeButtonStyle = (grade) => {
@@ -86,8 +87,12 @@ export default function PrivatePage() {
 
   //handles submit + API function call
   const handleSubmit = async () => {
-    if (!selectedGrade || !selectedSubject) return;
+    if (!selectedGrade || !selectedSubject) {
+      setErrorMessage("Please choose both a grade and subject.");
+      return;
+    }
 
+    setErrorMessage("");
     //set key/value pair
     const key = `${selectedGrade}-${selectedSubject}`;
     console.log("Selected Key: " + key);
@@ -190,7 +195,10 @@ export default function PrivatePage() {
             <UserInput type="text" placeholder="Improving comprehension skills" value={writtenInput} onChange={(e) => setWrittenInput(e.target.value)} question={undefined}/>
           </div>
         </div>
-        <div className="flex justify-center pb-2">
+        <div className="flex flex-col items-center pb-2">
+            {errorMessage && (
+              <div className="text-red-500 font-karla mb-4">{errorMessage}</div>
+            )}
             <GenButton onClick={handleSubmit} customStyles={generateButtonHomeStyle}>Generate</GenButton>
         </div>
         {/* Modal Component */}
